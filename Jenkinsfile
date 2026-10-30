@@ -44,6 +44,26 @@ pipeline {
          }
      }
 
+        stage('Credential Handling Demo') {
+            steps {
+                  withCredentials([
+                  string(
+                   credentialsId: 'training-demo-token',
+                   variable: 'DEMO_TOKEN'
+               )
+               ]) {
+               sh '''
+                if [ -n "$DEMO_TOKEN" ]; then
+                    echo "Training credential was loaded."
+                else
+                    echo "Training credential is missing."
+                    exit 1
+                fi
+            '''
+        }
+    }
+}
+
         stage('Unit Tests') {
             steps {
                 sh '''
